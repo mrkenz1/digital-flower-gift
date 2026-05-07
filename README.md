@@ -59,22 +59,38 @@ You can tune flower placement in `FLOWER_POSITIONS`, and adjust the rock, crysta
 
 ## Replace Or Disable Background Music
 
-Background music is optional. The site works even if no audio file exists.
+Background music is optional. The current music control uses this YouTube link:
 
-To add music, place your audio file here:
+```text
+https://youtu.be/9Zq79uu_o5E?si=Hz82hsTr6S12CYf0
+```
+
+To change the song, open `src/components/BackgroundMusic.jsx` and edit:
+
+```js
+const YOUTUBE_MUSIC_URL = "https://youtu.be/9Zq79uu_o5E?si=Hz82hsTr6S12CYf0";
+```
+
+The YouTube player starts muted by default because browsers often block sound autoplay. Use the music buttons in the gallery to play, pause, mute, or unmute.
+
+To disable music completely:
+
+```js
+const ENABLE_BACKGROUND_MUSIC = false;
+```
+
+To use a local audio file instead, place your audio file here:
 
 ```text
 public/audio/ambient.mp3
 ```
 
-To use a different file path or disable music, open `src/components/BackgroundMusic.jsx` and edit:
+Then edit:
 
 ```js
-const ENABLE_BACKGROUND_MUSIC = true;
+const MUSIC_SOURCE = "audio";
 const BACKGROUND_MUSIC_URL = "/audio/ambient.mp3";
 ```
-
-Set `ENABLE_BACKGROUND_MUSIC` to `false` to hide the music control.
 
 ## Build
 
@@ -133,9 +149,10 @@ https://mrkenz1.github.io/digital-flower-gift/
 To share it:
 
 1. Open the deployed site and click `QR`.
-2. Use the QR code shown in the modal, or generate one with the deployed URL using any QR code generator.
-3. Print or share the QR code.
-4. When someone scans it, it opens this website.
+2. Click `QR татах` to download the QR code as a PNG image.
+3. You can also click `Линк хуулах` to copy the live URL.
+4. Print or share the downloaded QR image.
+5. When someone scans it, it opens this website.
 
 Example URL:
 

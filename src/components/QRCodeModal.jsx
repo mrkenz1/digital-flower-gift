@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Copy, QrCode, X } from "lucide-react";
+import { Copy, Download, QrCode, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { createQrMatrix } from "../utils/qrCode.js";
 
@@ -9,6 +9,7 @@ const LIVE_SITE_URL = "https://mrkenz1.github.io/digital-flower-gift/";
 function QRCodeModal({ isOpen, onClose }) {
   const [pageUrl, setPageUrl] = useState("");
   const [copied, setCopied] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
@@ -17,6 +18,7 @@ function QRCodeModal({ isOpen, onClose }) {
 
     setPageUrl(LIVE_SITE_URL);
     setCopied(false);
+    setDownloaded(false);
   }, [isOpen]);
 
   const qrMatrix = useMemo(() => {
@@ -34,6 +36,23 @@ function QRCodeModal({ isOpen, onClose }) {
 
     await navigator.clipboard?.writeText(pageUrl);
     setCopied(true);
+  };
+
+  const downloadQr = async () => {
+    if (!qrMatrix) {
+      return;
+    }
+
+    const blob = await createQrPngBlob(qrMatrix);
+    const downloadUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = downloadUrl;
+    anchor.download = "digital-flower-gift-qr.png";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(downloadUrl);
+    setDownloaded(true);
   };
 
   return (
@@ -76,15 +95,61 @@ function QRCodeModal({ isOpen, onClose }) {
 
             <p className="qr-url">{pageUrl}</p>
 
-            <button type="button" className="qr-copy-button" onClick={copyUrl}>
-              <Copy size={16} />
-              {copied ? "Хуулагдлаа" : "Линк хуулах"}
-            </button>
+            <div className="qr-button-row">
+              <button type="button" className="qr-copy-button" onClick={copyUrl}>
+                <Copy size={16} />
+                {copied ? "Хуулагдлаа" : "Линк хуулах"}
+              </button>
+              <button type="button" className="qr-download-button" onClick={downloadQr}>
+                <Download size={16} />
+                {downloaded ? "Татагдлаа" : "QR татах"}
+              </button>
+            </div>
           </motion.section>
         </motion.div>
       )}
     </AnimatePresence>
   );
+}
+
+function createQrPngBlob(matrix) {
+  const quietZone = 4;
+  const moduleSize = 18;
+  const canvasSize = (matrix.size + quietZone * 2) * moduleSize;
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  canvas.width = canvasSize;
+  canvas.height = canvasSize;
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, canvasSize, canvasSize);
+  context.fillStyle = "#20243f";
+
+  matrix.modules.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (!value) {
+        return;
+      }
+
+      context.fillRect(
+        (x + quietZone) * moduleSize,
+        (y + quietZone) * moduleSize,
+        moduleSize,
+        moduleSize,
+      );
+    });
+  });
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob);
+        return;
+      }
+
+      reject(new Error("Could not create QR image."));
+    }, "image/png");
+  });
 }
 
 export default QRCodeModal;

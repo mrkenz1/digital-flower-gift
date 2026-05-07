@@ -1189,6 +1189,7 @@ button {
 .final-message-button,
 .qr-open-button,
 .qr-copy-button,
+.qr-download-button,
 .music-control button,
 .panel-close-button,
 .modal-close-button {
@@ -1218,6 +1219,7 @@ button {
 .final-message-button:hover,
 .qr-open-button:hover,
 .qr-copy-button:hover,
+.qr-download-button:hover,
 .music-control button:hover,
 .panel-close-button:hover,
 .modal-close-button:hover {
@@ -1280,6 +1282,15 @@ button {
 
 .music-control button:disabled {
   cursor: not-allowed;
+}
+
+.youtube-music-player {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hud-label {
@@ -1492,6 +1503,7 @@ button {
 .final-message-button,
 .qr-open-button,
 .qr-copy-button,
+.qr-download-button,
 .music-control button,
 .panel-close-button,
 .modal-close-button {
@@ -1506,6 +1518,7 @@ button {
 .final-message-button:hover,
 .qr-open-button:hover,
 .qr-copy-button:hover,
+.qr-download-button:hover,
 .music-control button:hover,
 .panel-close-button:hover,
 .modal-close-button:hover {
@@ -1677,7 +1690,14 @@ button {
   white-space: nowrap;
 }
 
-.qr-copy-button {
+.qr-button-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.qr-copy-button,
+.qr-download-button {
   display: inline-flex;
   width: 100%;
   align-items: center;
