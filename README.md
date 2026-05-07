@@ -22,12 +22,6 @@ Open the local URL printed by Vite.
 
 Open `src/components/PasswordGate.jsx` and edit:
 
-```js
-const CORRECT_PASSWORD = "0217";
-```
-
-Replace `"0217"` with the birthday password you want to use, for example `"0412"`.
-
 This is a simple client-side password gate for a romantic gift website, not a high-security login system.
 
 ## Change Flower Texts
