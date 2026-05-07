@@ -34,15 +34,14 @@ function FlowerInfoPanel({ openedFlowerInfo, onClose }) {
           </div>
 
           <div className="info-section">
-            <span> тайлбар</span>
+            <span>Романтик мэдрэмж</span>
             <p>{flower.romanticInterpretation}</p>
           </div>
 
           <div className="info-section">
-            <span>Тайлбар</span>
-            <p>{flower.description}</p>
+            <span>Танин мэдэхүйн арчилгаа</span>
+            <p>{flower.care}</p>
           </div>
-
         </motion.aside>
       )}
     </AnimatePresence>

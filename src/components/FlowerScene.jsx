@@ -147,6 +147,20 @@ function SceneContent({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOp
 }
 
 function GalleryBase() {
+  const grassBlades = useMemo(
+    () =>
+      Array.from({ length: 170 }, (_, index) => {
+        const angle = index * 2.399963;
+        const radius = Math.sqrt(((index * 37) % 100) / 100);
+        const x = Math.cos(angle) * radius * 3.05;
+        const z = Math.sin(angle) * radius * 0.86;
+        const height = 0.1 + (index % 7) * 0.018;
+        const lean = ((index % 11) - 5) * 0.018;
+        return [x, z, height, lean];
+      }),
+    [],
+  );
+
   return (
     <group>
       <mesh position={[0, -0.05, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
@@ -161,6 +175,39 @@ function GalleryBase() {
         <circleGeometry args={[2.72, 110]} />
         <meshBasicMaterial color="#c7b5d7" transparent opacity={0.12} />
       </mesh>
+
+      <mesh position={[0, -0.015, 0]} scale={[3.08, 0.075, 0.95]} receiveShadow>
+        <sphereGeometry args={[1, 48, 14]} />
+        <meshStandardMaterial
+          color="#6b4428"
+          roughness={0.84}
+          metalness={0.01}
+          emissive="#241107"
+          emissiveIntensity={0.03}
+        />
+      </mesh>
+
+      <mesh position={[0, 0.035, 0]} scale={[2.86, 0.036, 0.8]} receiveShadow>
+        <sphereGeometry args={[1, 48, 12]} />
+        <meshStandardMaterial
+          color="#2f8f3f"
+          roughness={0.7}
+          metalness={0.01}
+          emissive="#123d18"
+          emissiveIntensity={0.06}
+        />
+      </mesh>
+
+      {grassBlades.map(([x, z, height, lean], index) => (
+        <mesh
+          key={`base-grass-${index}`}
+          position={[x, 0.045 + height * 0.5, z]}
+          rotation={[lean * 1.5, 0, lean]}
+        >
+          <cylinderGeometry args={[0.004, 0.008, height, 5]} />
+          <meshStandardMaterial color={index % 4 === 0 ? "#65d775" : "#1e8d35"} roughness={0.54} />
+        </mesh>
+      ))}
     </group>
   );
 }
