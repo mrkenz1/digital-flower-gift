@@ -3,6 +3,9 @@ import { Copy, QrCode, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { createQrMatrix } from "../utils/qrCode.js";
 
+// Keep the QR pinned to the deployed GitHub Pages URL so it never points to localhost.
+const LIVE_SITE_URL = "https://mrkenz1.github.io/digital-flower-gift/";
+
 function QRCodeModal({ isOpen, onClose }) {
   const [pageUrl, setPageUrl] = useState("");
   const [copied, setCopied] = useState(false);
@@ -12,7 +15,7 @@ function QRCodeModal({ isOpen, onClose }) {
       return;
     }
 
-    setPageUrl(window.location.href);
+    setPageUrl(LIVE_SITE_URL);
     setCopied(false);
   }, [isOpen]);
 

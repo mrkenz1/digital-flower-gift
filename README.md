@@ -4,6 +4,16 @@ Premium romantic single-page web experience with a password gate, cinematic load
 
 Built with React, Vite, Three.js, @react-three/fiber, @react-three/drei, Tailwind CSS, and Framer Motion. It is designed to deploy as a static GitHub Pages site and open from a QR code.
 
+## Live Site
+
+Open the hosted gift here:
+
+```text
+https://mrkenz1.github.io/digital-flower-gift/
+```
+
+The in-app QR button is pinned to this live GitHub Pages URL, so it stays shareable even when you run the project locally.
+
 ## Install Dependencies
 
 ```bash
@@ -96,7 +106,13 @@ Then deploy:
 npm run deploy
 ```
 
-Your deployed URL will look like:
+The current live URL is:
+
+```text
+https://mrkenz1.github.io/digital-flower-gift/
+```
+
+For another account, your deployed URL will look like:
 
 ```text
 https://your-username.github.io/digital-flower-gift/
@@ -108,13 +124,18 @@ You can also deploy manually by running `npm run build` and publishing the `dist
 
 Do not hardcode a QR image into the website.
 
-The gallery includes a `QR` button that opens a QR code for the current page URL. After deployment:
+The gallery includes a `QR` button that opens a QR code for the live GitHub Pages URL:
 
-1. Copy the deployed GitHub Pages URL.
-2. Open the deployed site and click `QR`.
-3. Use the QR code shown in the modal, or generate one with the deployed URL using any QR code generator.
-4. Print or share the QR code.
-5. When someone scans it, it opens this website.
+```text
+https://mrkenz1.github.io/digital-flower-gift/
+```
+
+To share it:
+
+1. Open the deployed site and click `QR`.
+2. Use the QR code shown in the modal, or generate one with the deployed URL using any QR code generator.
+3. Print or share the QR code.
+4. When someone scans it, it opens this website.
 
 Example URL:
 
