@@ -81,7 +81,7 @@ function App() {
                   className="final-message-button"
                   onClick={() => setIsMessageOpen(true)}
                 >
-                  Сүүлийн зурвас
+                  Нандин зурвас
                 </button>
                 <button type="button" className="qr-open-button" onClick={() => setIsQrOpen(true)}>
                   QR

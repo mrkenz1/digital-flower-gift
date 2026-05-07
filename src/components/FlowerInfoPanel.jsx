@@ -34,7 +34,7 @@ function FlowerInfoPanel({ openedFlowerInfo, onClose }) {
           </div>
 
           <div className="info-section">
-            <span>Романтик мэдрэмж</span>
+            <span>мэдрэмж</span>
             <p>{flower.romanticInterpretation}</p>
           </div>
 
