@@ -532,6 +532,58 @@ function RoseDisplay({ active, onOpen }) {
           scale={0.36}
           leafSide={1}
         />
+        <RoseExtraStem
+          offset={[-0.72, 0, 0.18]}
+          points={[
+            [0, 0.02, 0],
+            [-0.18, 0.46, 0.08],
+            [-0.36, 0.84, 0.12],
+            [-0.5, 1.12, 0.16],
+          ]}
+          head={[-0.54, 1.18, 0.18]}
+          rotation={[0.84, -0.58, -0.22]}
+          scale={0.34}
+          leafSide={-1}
+        />
+        <RoseExtraStem
+          offset={[0.72, 0, 0.16]}
+          points={[
+            [0, 0.02, 0],
+            [0.18, 0.5, 0.08],
+            [0.34, 0.88, 0.12],
+            [0.48, 1.12, 0.16],
+          ]}
+          head={[0.52, 1.18, 0.18]}
+          rotation={[0.82, 0.56, 0.22]}
+          scale={0.33}
+          leafSide={1}
+        />
+        <RoseExtraStem
+          offset={[-0.12, 0, -0.48]}
+          points={[
+            [0, 0.02, 0],
+            [-0.08, 0.58, -0.08],
+            [-0.16, 1.0, -0.16],
+            [-0.2, 1.36, -0.22],
+          ]}
+          head={[-0.22, 1.42, -0.24]}
+          rotation={[0.78, -0.16, -0.04]}
+          scale={0.38}
+          leafSide={-1}
+        />
+        <RoseExtraStem
+          offset={[0.52, 0, 0.42]}
+          points={[
+            [0, 0.02, 0],
+            [0.02, 0.42, 0.1],
+            [0.08, 0.76, 0.18],
+            [0.16, 1.0, 0.24],
+          ]}
+          head={[0.18, 1.06, 0.26]}
+          rotation={[0.86, 0.28, 0.08]}
+          scale={0.3}
+          leafSide={1}
+        />
       </SwayGroup>
     </BotanicalGroup>
   );
@@ -1119,6 +1171,108 @@ function TulipArrangement({ active, onOpen }) {
         open: 0.4,
         scale: 0.6,
       },
+      {
+        id: "pink-ground-sprout",
+        points: [
+          [-0.16, 0.02, 0.36],
+          [-0.26, 0.34, 0.5],
+          [-0.38, 0.62, 0.62],
+          [-0.48, 0.86, 0.7],
+        ],
+        head: [-0.52, 0.9, 0.72],
+        rotation: [0.14, -0.58, -0.3],
+        baseColor: "#fff0cc",
+        tipColor: "#f47dae",
+        edgeColor: "#c94d83",
+        veinColor: "#b75b82",
+        open: 0.72,
+        scale: 0.46,
+      },
+      {
+        id: "lavender-ground-sprout",
+        points: [
+          [0.16, 0.02, 0.34],
+          [0.24, 0.4, 0.5],
+          [0.36, 0.72, 0.6],
+          [0.44, 0.98, 0.64],
+        ],
+        head: [0.48, 1.02, 0.66],
+        rotation: [0.1, 0.42, 0.22],
+        baseColor: "#f7dfd5",
+        tipColor: "#9d77d5",
+        edgeColor: "#7652a6",
+        veinColor: "#7a5796",
+        open: 0.46,
+        scale: 0.5,
+      },
+      {
+        id: "amber-ground-sprout",
+        points: [
+          [0.32, 0.02, -0.34],
+          [0.46, 0.42, -0.46],
+          [0.58, 0.8, -0.58],
+          [0.68, 1.1, -0.68],
+        ],
+        head: [0.72, 1.14, -0.7],
+        rotation: [-0.06, 0.36, 0.14],
+        baseColor: "#fff0a7",
+        tipColor: "#f0aa38",
+        edgeColor: "#d25c62",
+        veinColor: "#b87942",
+        open: 0.34,
+        scale: 0.54,
+      },
+      {
+        id: "ruby-ground-sprout",
+        points: [
+          [-0.28, 0.02, -0.34],
+          [-0.48, 0.36, -0.5],
+          [-0.66, 0.68, -0.62],
+          [-0.82, 0.94, -0.72],
+        ],
+        head: [-0.86, 0.98, -0.74],
+        rotation: [0.02, -0.66, -0.28],
+        baseColor: "#f5b3d2",
+        tipColor: "#b51e72",
+        edgeColor: "#7d174d",
+        veinColor: "#85345c",
+        open: 0.48,
+        scale: 0.48,
+      },
+      {
+        id: "cream-ground-sprout",
+        points: [
+          [0.0, 0.02, 0.44],
+          [0.04, 0.46, 0.66],
+          [0.02, 0.9, 0.78],
+          [-0.02, 1.18, 0.84],
+        ],
+        head: [-0.04, 1.22, 0.86],
+        rotation: [0.08, -0.06, -0.04],
+        baseColor: "#fff7d2",
+        tipColor: "#f6bad0",
+        edgeColor: "#d77a9e",
+        veinColor: "#be8299",
+        open: 0.52,
+        scale: 0.52,
+      },
+      {
+        id: "violet-ground-back",
+        points: [
+          [0.02, 0.02, -0.42],
+          [-0.06, 0.52, -0.62],
+          [-0.18, 0.98, -0.78],
+          [-0.26, 1.32, -0.88],
+        ],
+        head: [-0.3, 1.36, -0.9],
+        rotation: [-0.08, -0.18, -0.08],
+        baseColor: "#f5d7df",
+        tipColor: "#ad84d0",
+        edgeColor: "#7759a8",
+        veinColor: "#795d9b",
+        open: 0.38,
+        scale: 0.5,
+      },
     ],
     [],
   );
@@ -1370,6 +1524,50 @@ function LilyArrangement({ active, onOpen }) {
         rotation: [0.72, 0.04, 0.04],
         scale: 0.48,
       },
+      {
+        id: "ground-pink-lily",
+        points: [
+          [-0.18, 0.04, 0.38],
+          [-0.34, 0.46, 0.56],
+          [-0.52, 0.78, 0.68],
+        ],
+        head: [-0.58, 0.84, 0.72],
+        rotation: [0.72, -0.72, -0.32],
+        scale: 0.42,
+      },
+      {
+        id: "ground-right-lily",
+        points: [
+          [0.22, 0.04, 0.36],
+          [0.44, 0.52, 0.5],
+          [0.68, 0.88, 0.58],
+        ],
+        head: [0.74, 0.94, 0.6],
+        rotation: [0.68, 0.74, 0.32],
+        scale: 0.44,
+      },
+      {
+        id: "ground-back-lily",
+        points: [
+          [0.06, 0.04, -0.4],
+          [0.16, 0.62, -0.58],
+          [0.3, 1.1, -0.74],
+        ],
+        head: [0.34, 1.16, -0.78],
+        rotation: [0.62, 0.28, 0.08],
+        scale: 0.46,
+      },
+      {
+        id: "ground-left-back-lily",
+        points: [
+          [-0.18, 0.04, -0.36],
+          [-0.44, 0.56, -0.5],
+          [-0.68, 0.96, -0.62],
+        ],
+        head: [-0.74, 1.02, -0.66],
+        rotation: [0.66, -0.64, -0.2],
+        scale: 0.42,
+      },
     ],
     [],
   );
@@ -1452,6 +1650,39 @@ function LilyArrangement({ active, onOpen }) {
         position: [0.52, 1.86, -0.3],
         rotation: [0.06, 0.44, 0.18],
         scale: 0.68,
+      },
+      {
+        id: "ground-front-bud",
+        points: [
+          [0.04, 0.04, 0.48],
+          [0.16, 0.42, 0.66],
+          [0.28, 0.72, 0.76],
+        ],
+        position: [0.32, 0.78, 0.8],
+        rotation: [0.12, 0.44, 0.24],
+        scale: 0.56,
+      },
+      {
+        id: "ground-back-bud",
+        points: [
+          [-0.04, 0.04, -0.48],
+          [-0.2, 0.5, -0.68],
+          [-0.36, 0.86, -0.82],
+        ],
+        position: [-0.4, 0.94, -0.86],
+        rotation: [0.08, -0.42, -0.18],
+        scale: 0.58,
+      },
+      {
+        id: "ground-side-bud",
+        points: [
+          [0.12, 0.04, -0.34],
+          [0.4, 0.46, -0.48],
+          [0.64, 0.78, -0.58],
+        ],
+        position: [0.68, 0.86, -0.62],
+        rotation: [0.1, 0.58, 0.24],
+        scale: 0.52,
       },
     ],
     [],
