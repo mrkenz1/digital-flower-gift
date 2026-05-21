@@ -22,6 +22,34 @@ const FLOATING_PARTICLES = [
   [92, 62, 0.8],
 ];
 
+const BUTTERFLY_LANDING_SPOTS = [
+  [-2.05, 2.5, 0.08],
+  [-2.9, 1.9, -0.05],
+  [-1.48, 1.88, -0.18],
+  [-0.9, 2.24, 0.08],
+  [0.74, 2.42, -0.04],
+  [0.98, 1.2, 0.06],
+  [2.37, 2.2, -0.08],
+  [1.72, 1.24, 0.32],
+  [3.02, 1.9, 0.1],
+];
+
+const BUTTERFLIES = [
+  { phase: 0.2, period: 6.4, rest: 1.1, centerX: -1.7, radiusX: 1.9, baseZ: 0.44, scale: 0.72, color: "#f7b7de", spotOffset: 0 },
+  { phase: 2.1, period: 7.2, rest: 1.35, centerX: 0.2, radiusX: 2.4, baseZ: -0.12, scale: 0.64, color: "#b8e9ff", spotOffset: 3 },
+  { phase: 3.6, period: 6.8, rest: 1.2, centerX: 1.45, radiusX: 2.0, baseZ: 0.28, scale: 0.68, color: "#ffe1a8", spotOffset: 5 },
+  { phase: 5.0, period: 8.1, rest: 1.45, centerX: 0.6, radiusX: 2.8, baseZ: -0.48, scale: 0.58, color: "#d7c6ff", spotOffset: 7 },
+];
+
+function easeInOut(value) {
+  const t = Math.min(1, Math.max(0, value));
+  return t * t * (3 - 2 * t);
+}
+
+function lerp(start, end, amount) {
+  return start + (end - start) * amount;
+}
+
 function FlowerScene({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOpen }) {
   return (
     <section className="visual-art-scene frozen-botanical-scene orbital-flower-scene">
@@ -127,6 +155,7 @@ function SceneContent({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOp
         <RoseDisplay active={roseActive} onOpen={() => onFlowerOpen("rose")} />
         <TulipArrangement active={tulipActive} onOpen={() => onFlowerOpen("tulip")} />
         <LilyArrangement active={lilyActive} onOpen={() => onFlowerOpen("lily")} />
+        <ButterflySwarm />
       </group>
 
       <Sparkles count={48} scale={[7.2, 3.0, 4.2]} size={1.6} speed={0.18} color="#ffffff" opacity={0.35} />
@@ -266,6 +295,137 @@ function SwayGroup({ children, phase = 0, strength = 0.025 }) {
   return <group ref={ref}>{children}</group>;
 }
 
+function ButterflySwarm() {
+  return (
+    <group>
+      {BUTTERFLIES.map((butterfly, index) => (
+        <Butterfly key={`butterfly-${index}`} config={butterfly} landingSpots={BUTTERFLY_LANDING_SPOTS} />
+      ))}
+    </group>
+  );
+}
+
+function Butterfly({ config, landingSpots }) {
+  const groupRef = useRef(null);
+  const leftWingRef = useRef(null);
+  const rightWingRef = useRef(null);
+
+  useFrame(({ clock }) => {
+    if (!groupRef.current || !leftWingRef.current || !rightWingRef.current) {
+      return;
+    }
+
+    const elapsed = clock.getElapsedTime() + config.phase;
+    const cycle = elapsed % config.period;
+    const approachTime = 0.55;
+    const leaveTime = 0.5;
+    const restStart = config.period * 0.52;
+    const restEnd = restStart + config.rest;
+    const spotIndex = (Math.floor(elapsed / config.period) + config.spotOffset) % landingSpots.length;
+    const spot = landingSpots[spotIndex];
+    const flyX = config.centerX + Math.sin(elapsed * 0.72 + config.phase) * config.radiusX + Math.sin(elapsed * 1.9) * 0.16;
+    const flyY = 1.38 + Math.sin(elapsed * 1.05 + config.phase) * 0.45 + Math.sin(elapsed * 2.25) * 0.08;
+    const flyZ = config.baseZ + Math.cos(elapsed * 0.58 + config.phase) * 0.78;
+    const exitX = config.centerX + Math.sin((elapsed + 0.8) * 0.72 + config.phase) * config.radiusX;
+    const exitY = 1.45 + Math.sin((elapsed + 0.8) * 1.05 + config.phase) * 0.42;
+    const exitZ = config.baseZ + Math.cos((elapsed + 0.8) * 0.58 + config.phase) * 0.78;
+    let landingAmount = 0;
+
+    if (cycle >= restStart && cycle < restStart + approachTime) {
+      landingAmount = easeInOut((cycle - restStart) / approachTime);
+      groupRef.current.position.set(
+        lerp(flyX, spot[0], landingAmount),
+        lerp(flyY, spot[1], landingAmount),
+        lerp(flyZ, spot[2], landingAmount),
+      );
+    } else if (cycle >= restStart + approachTime && cycle < restEnd) {
+      landingAmount = 1;
+      groupRef.current.position.set(
+        spot[0] + Math.sin(elapsed * 5.2) * 0.01,
+        spot[1] + Math.sin(elapsed * 4.1) * 0.012,
+        spot[2] + Math.cos(elapsed * 4.4) * 0.01,
+      );
+    } else if (cycle >= restEnd && cycle < restEnd + leaveTime) {
+      const t = easeInOut((cycle - restEnd) / leaveTime);
+      landingAmount = 1 - t;
+      groupRef.current.position.set(
+        lerp(spot[0], exitX, t),
+        lerp(spot[1], exitY, t),
+        lerp(spot[2], exitZ, t),
+      );
+    } else {
+      groupRef.current.position.set(flyX, flyY, flyZ);
+    }
+
+    const nextX = config.centerX + Math.sin((elapsed + 0.06) * 0.72 + config.phase) * config.radiusX;
+    const nextZ = config.baseZ + Math.cos((elapsed + 0.06) * 0.58 + config.phase) * 0.78;
+    const yaw = Math.atan2(nextX - groupRef.current.position.x, nextZ - groupRef.current.position.z);
+    groupRef.current.rotation.set(
+      Math.sin(elapsed * 1.4) * 0.12,
+      yaw,
+      Math.sin(elapsed * 1.8 + config.phase) * 0.16,
+    );
+    groupRef.current.scale.setScalar(config.scale * (landingAmount > 0.7 ? 0.88 : 1));
+
+    const wingOpen =
+      landingAmount > 0.7
+        ? 0.42 + Math.sin(elapsed * 5.5) * 0.06
+        : 0.48 + Math.sin(elapsed * 23 + config.phase) * 0.42;
+    leftWingRef.current.rotation.y = wingOpen;
+    rightWingRef.current.rotation.y = -wingOpen;
+  });
+
+  return (
+    <group ref={groupRef}>
+      <mesh raycast={null} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.015, 0.011, 0.18, 8]} />
+        <meshStandardMaterial color="#5a3659" roughness={0.42} metalness={0.04} />
+      </mesh>
+      <mesh raycast={null} position={[0, 0.105, 0]} scale={[0.026, 0.026, 0.026]}>
+        <sphereGeometry args={[1, 10, 8]} />
+        <meshStandardMaterial color="#4a294f" roughness={0.42} />
+      </mesh>
+      <group ref={leftWingRef} position={[-0.018, 0.025, 0]}>
+        <ButterflyWing side={-1} color={config.color} />
+      </group>
+      <group ref={rightWingRef} position={[0.018, 0.025, 0]}>
+        <ButterflyWing side={1} color={config.color} />
+      </group>
+    </group>
+  );
+}
+
+function ButterflyWing({ side, color }) {
+  return (
+    <group rotation={[0, 0, side * 0.42]}>
+      <mesh raycast={null} position={[side * 0.08, 0.04, 0]} rotation={[0, 0, side * 0.16]}>
+        <planeGeometry args={[0.16, 0.24, 2, 2]} />
+        <meshPhysicalMaterial
+          color={color}
+          side={THREE.DoubleSide}
+          transparent
+          opacity={0.78}
+          roughness={0.34}
+          metalness={0.02}
+          clearcoat={0.45}
+          clearcoatRoughness={0.22}
+        />
+      </mesh>
+      <mesh raycast={null} position={[side * 0.06, -0.08, 0.004]} rotation={[0, 0, side * -0.12]}>
+        <planeGeometry args={[0.12, 0.16, 2, 2]} />
+        <meshPhysicalMaterial
+          color="#fff4fb"
+          side={THREE.DoubleSide}
+          transparent
+          opacity={0.64}
+          roughness={0.38}
+          clearcoat={0.34}
+        />
+      </mesh>
+    </group>
+  );
+}
+
 function RoseDisplay({ active, onOpen }) {
   return (
     <BotanicalGroup id="rose" position={[-2.05, 0, 0.03]} active={active} onOpen={onOpen}>
@@ -333,6 +493,45 @@ function RoseDisplay({ active, onOpen }) {
           rotation={[0.82, 0.52, 0.18]}
           scale={0.36}
         />
+        <RoseExtraStem
+          offset={[-0.38, 0, -0.24]}
+          points={[
+            [0, 0.02, 0],
+            [-0.1, 0.58, 0.02],
+            [-0.18, 1.0, 0.04],
+            [-0.28, 1.36, 0.06],
+          ]}
+          head={[-0.3, 1.42, 0.06]}
+          rotation={[0.86, -0.38, -0.1]}
+          scale={0.44}
+          leafSide={-1}
+        />
+        <RoseExtraStem
+          offset={[0.36, 0, -0.26]}
+          points={[
+            [0, 0.02, 0],
+            [0.08, 0.46, -0.02],
+            [0.2, 0.88, -0.04],
+            [0.32, 1.22, -0.06],
+          ]}
+          head={[0.34, 1.28, -0.06]}
+          rotation={[0.78, 0.48, 0.18]}
+          scale={0.4}
+          leafSide={1}
+        />
+        <RoseExtraStem
+          offset={[0.02, 0, 0.32]}
+          points={[
+            [0, 0.02, 0],
+            [-0.02, 0.48, 0.08],
+            [0.08, 0.88, 0.14],
+            [0.18, 1.18, 0.18],
+          ]}
+          head={[0.2, 1.22, 0.2]}
+          rotation={[0.82, 0.16, 0.05]}
+          scale={0.36}
+          leafSide={1}
+        />
       </SwayGroup>
     </BotanicalGroup>
   );
@@ -342,6 +541,30 @@ function RoseSideBloom({ points, head, rotation, scale }) {
   return (
     <group>
       <CurvedStem points={points} radius={0.014} color="#426f20" roughness={0.45} />
+      <group position={head} rotation={rotation} scale={scale}>
+        <RoseBloom />
+        <RoseSepals />
+      </group>
+    </group>
+  );
+}
+
+function RoseExtraStem({ offset, points, head, rotation, scale, leafSide = 1 }) {
+  const leafStem = [
+    [0.02 * leafSide, 0.56, 0.01],
+    [0.18 * leafSide, 0.66, 0.04],
+    [0.34 * leafSide, 0.74, 0.06],
+  ];
+
+  return (
+    <group position={offset}>
+      <CurvedStem points={points} radius={0.013} color="#426f20" roughness={0.45} />
+      <CurvedStem points={leafStem} radius={0.008} color="#456d22" roughness={0.48} />
+      <SerratedRoseLeaf
+        position={[0.38 * leafSide, 0.76, 0.07]}
+        rotation={[0.42, leafSide > 0 ? -0.28 : 0.16, leafSide > 0 ? -0.92 : 0.92]}
+        scale={[0.58, 0.58, 0.58]}
+      />
       <group position={head} rotation={rotation} scale={scale}>
         <RoseBloom />
         <RoseSepals />
@@ -828,6 +1051,74 @@ function TulipArrangement({ active, onOpen }) {
         open: 0.62,
         scale: 0.56,
       },
+      {
+        id: "soft-pink-back",
+        points: [
+          [-0.02, 0.02, -0.18],
+          [-0.3, 0.7, -0.34],
+          [-0.62, 1.28, -0.46],
+          [-0.78, 1.68, -0.48],
+        ],
+        head: [-0.82, 1.72, -0.48],
+        rotation: [-0.02, -0.44, -0.1],
+        baseColor: "#ffeccf",
+        tipColor: "#f0a2c5",
+        edgeColor: "#c96e9a",
+        veinColor: "#b76c91",
+        open: 0.48,
+        scale: 0.58,
+      },
+      {
+        id: "gold-front-small",
+        points: [
+          [0.08, 0.02, 0.2],
+          [0.3, 0.44, 0.34],
+          [0.62, 0.78, 0.42],
+          [0.82, 1.04, 0.44],
+        ],
+        head: [0.86, 1.08, 0.44],
+        rotation: [0.1, 0.54, 0.28],
+        baseColor: "#fff3a7",
+        tipColor: "#f7b857",
+        edgeColor: "#df6e68",
+        veinColor: "#bd8050",
+        open: 0.32,
+        scale: 0.54,
+      },
+      {
+        id: "violet-front-low",
+        points: [
+          [-0.08, 0.02, 0.2],
+          [-0.3, 0.36, 0.34],
+          [-0.56, 0.62, 0.44],
+          [-0.76, 0.82, 0.48],
+        ],
+        head: [-0.8, 0.86, 0.5],
+        rotation: [0.12, -0.58, -0.26],
+        baseColor: "#f4d6dc",
+        tipColor: "#ac79d0",
+        edgeColor: "#7656ad",
+        veinColor: "#7a5a9c",
+        open: 0.56,
+        scale: 0.5,
+      },
+      {
+        id: "pearl-right",
+        points: [
+          [0.02, 0.02, -0.14],
+          [0.28, 0.6, -0.28],
+          [0.62, 1.08, -0.42],
+          [0.92, 1.42, -0.5],
+        ],
+        head: [0.96, 1.46, -0.5],
+        rotation: [-0.04, 0.38, 0.12],
+        baseColor: "#fff8df",
+        tipColor: "#f4bfd6",
+        edgeColor: "#d889ac",
+        veinColor: "#bd7c9e",
+        open: 0.4,
+        scale: 0.6,
+      },
     ],
     [],
   );
@@ -923,6 +1214,9 @@ function TulipLeaves() {
     [[0.34, 0.28, -0.02], [0.52, -0.1, -0.52], [0.98, 0.75, 0.92], 0.66],
     [[-0.42, 0.2, 0.04], [0.55, 0.02, 0.95], [1.12, 0.78, 0.96], 0.72],
     [[0.58, 0.18, 0.03], [0.5, -0.06, -1.02], [1.45, 0.95, 1.05], 0.88],
+    [[-0.64, 0.16, -0.12], [0.42, 0.04, 0.78], [1.02, 0.74, 0.88], 0.68],
+    [[0.78, 0.14, 0.14], [0.46, -0.08, -1.08], [1.18, 0.82, 0.96], 0.72],
+    [[-0.2, 0.12, 0.24], [0.38, -0.04, 0.34], [0.92, 0.66, 0.86], 0.6],
   ];
 
   return (
@@ -1042,6 +1336,40 @@ function LilyArrangement({ active, onOpen }) {
         rotation: [0.6, -0.72, -0.12],
         scale: 0.48,
       },
+      {
+        id: "low-right-lily",
+        points: [
+          [0.02, 0.04, 0.08],
+          [0.28, 0.5, 0.22],
+          [0.54, 0.84, 0.3],
+        ],
+        head: [0.6, 0.9, 0.32],
+        rotation: [0.68, 0.66, 0.26],
+        scale: 0.46,
+      },
+      {
+        id: "high-left-lily",
+        points: [
+          [-0.02, 0.04, -0.04],
+          [-0.28, 0.88, -0.16],
+          [-0.62, 1.76, -0.28],
+          [-0.78, 2.32, -0.34],
+        ],
+        head: [-0.82, 2.38, -0.36],
+        rotation: [0.58, -0.38, -0.08],
+        scale: 0.5,
+      },
+      {
+        id: "center-front-lily",
+        points: [
+          [0, 0.04, 0.12],
+          [0.06, 0.62, 0.28],
+          [0.02, 1.08, 0.42],
+        ],
+        head: [0, 1.14, 0.44],
+        rotation: [0.72, 0.04, 0.04],
+        scale: 0.48,
+      },
     ],
     [],
   );
@@ -1102,6 +1430,28 @@ function LilyArrangement({ active, onOpen }) {
         position: [-0.46, 1.38, -0.38],
         rotation: [0.05, -0.36, -0.18],
         scale: 0.72,
+      },
+      {
+        id: "low-left-bud",
+        points: [
+          [-0.02, 0.04, 0.04],
+          [-0.34, 0.48, 0.14],
+          [-0.58, 0.84, 0.2],
+        ],
+        position: [-0.62, 0.9, 0.22],
+        rotation: [0.08, -0.58, -0.3],
+        scale: 0.62,
+      },
+      {
+        id: "high-right-bud",
+        points: [
+          [0.02, 0.04, -0.04],
+          [0.24, 0.86, -0.16],
+          [0.48, 1.76, -0.28],
+        ],
+        position: [0.52, 1.86, -0.3],
+        rotation: [0.06, 0.44, 0.18],
+        scale: 0.68,
       },
     ],
     [],
