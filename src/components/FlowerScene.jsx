@@ -4,9 +4,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 const DISPLAY_POSITIONS = {
-  rose: [-1.72, 0, 0],
-  tulip: [0.18, 0, 0],
-  lily: [1.82, 0, 0],
+  rose: [-2.05, 0, 0],
+  tulip: [0, 0, 0],
+  lily: [2.12, 0, 0],
 };
 
 const FLOATING_PARTICLES = [
@@ -34,7 +34,7 @@ function FlowerScene({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOpe
 
       <Canvas
         className="flower-canvas"
-        camera={{ position: [0, 1.72, 6.5], fov: 40, near: 0.1, far: 100 }}
+        camera={{ position: [0, 1.72, 7.2], fov: 40, near: 0.1, far: 100 }}
         dpr={[1, 1.75]}
         gl={{ alpha: true, antialias: true }}
         shadows
@@ -64,7 +64,7 @@ function SceneContent({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOp
   const focusRef = useRef({
     until: 0,
     target: new THREE.Vector3(0, 1.18, 0),
-    camera: new THREE.Vector3(0, 1.72, 6.5),
+    camera: new THREE.Vector3(0, 1.72, 7.2),
   });
   const { camera, size } = useThree();
   const isMobile = size.width < 700;
@@ -74,7 +74,7 @@ function SceneContent({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOp
       return;
     }
 
-    camera.position.set(0, isMobile ? 1.72 : 1.72, isMobile ? 8.0 : 6.5);
+    camera.position.set(0, isMobile ? 1.72 : 1.72, isMobile ? 8.6 : 7.2);
     if (controlsRef.current) {
       controlsRef.current.target.set(0, 1.18, 0);
       controlsRef.current.update();
@@ -93,7 +93,7 @@ function SceneContent({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOp
 
     const focusY = selectedFlower === "rose" ? 1.5 : selectedFlower === "lily" ? 1.58 : 1.24;
     focusRef.current.target.set(position[0], focusY, 0);
-    focusRef.current.camera.set(position[0] * 0.42, isMobile ? 1.86 : 1.7, isMobile ? 6.85 : 4.7);
+    focusRef.current.camera.set(position[0] * 0.42, isMobile ? 1.86 : 1.7, isMobile ? 7.15 : 5.05);
     focusRef.current.until = performance.now() + 1200;
   }, [selectedFlower, focusToken, isMobile]);
 
@@ -129,7 +129,7 @@ function SceneContent({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOp
         <LilyArrangement active={lilyActive} onOpen={() => onFlowerOpen("lily")} />
       </group>
 
-      <Sparkles count={34} scale={[5.7, 2.7, 3.6]} size={1.6} speed={0.18} color="#ffffff" opacity={0.35} />
+      <Sparkles count={48} scale={[7.2, 3.0, 4.2]} size={1.6} speed={0.18} color="#ffffff" opacity={0.35} />
 
       <OrbitControls
         ref={controlsRef}
@@ -137,7 +137,7 @@ function SceneContent({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOp
         dampingFactor={0.08}
         makeDefault
         minDistance={3.0}
-        maxDistance={9.2}
+        maxDistance={10.5}
         minPolarAngle={0.35}
         maxPolarAngle={1.72}
         target={[0, 1.18, 0]}
@@ -149,13 +149,13 @@ function SceneContent({ selectedFlower, openedFlowerInfo, focusToken, onFlowerOp
 function GalleryBase() {
   const grassBlades = useMemo(
     () =>
-      Array.from({ length: 170 }, (_, index) => {
+      Array.from({ length: 280 }, (_, index) => {
         const angle = index * 2.399963;
         const radius = Math.sqrt(((index * 37) % 100) / 100);
-        const x = Math.cos(angle) * radius * 3.05;
-        const z = Math.sin(angle) * radius * 0.86;
-        const height = 0.1 + (index % 7) * 0.018;
-        const lean = ((index % 11) - 5) * 0.018;
+        const x = Math.cos(angle) * radius * 4.08;
+        const z = Math.sin(angle) * radius * 1.18;
+        const height = 0.105 + (index % 8) * 0.018;
+        const lean = ((index % 13) - 6) * 0.016;
         return [x, z, height, lean];
       }),
     [],
@@ -164,20 +164,20 @@ function GalleryBase() {
   return (
     <group>
       <mesh position={[0, -0.05, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <circleGeometry args={[3.58, 120]} />
+        <circleGeometry args={[4.72, 140]} />
         <meshStandardMaterial color="#f2e7ec" roughness={0.72} metalness={0.02} />
       </mesh>
       <mesh position={[0, -0.065, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[2.82, 3.58, 140]} />
+        <ringGeometry args={[3.78, 4.72, 160]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.48} />
       </mesh>
       <mesh position={[0, -0.09, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[2.72, 110]} />
+        <circleGeometry args={[3.58, 130]} />
         <meshBasicMaterial color="#c7b5d7" transparent opacity={0.12} />
       </mesh>
 
-      <mesh position={[0, -0.015, 0]} scale={[3.08, 0.075, 0.95]} receiveShadow>
-        <sphereGeometry args={[1, 48, 14]} />
+      <mesh position={[0, -0.018, 0]} scale={[4.18, 0.088, 1.28]} receiveShadow>
+        <sphereGeometry args={[1, 58, 16]} />
         <meshStandardMaterial
           color="#6b4428"
           roughness={0.84}
@@ -187,8 +187,8 @@ function GalleryBase() {
         />
       </mesh>
 
-      <mesh position={[0, 0.035, 0]} scale={[2.86, 0.036, 0.8]} receiveShadow>
-        <sphereGeometry args={[1, 48, 12]} />
+      <mesh position={[0, 0.038, 0]} scale={[3.82, 0.046, 1.08]} receiveShadow>
+        <sphereGeometry args={[1, 58, 14]} />
         <meshStandardMaterial
           color="#2f8f3f"
           roughness={0.7}
@@ -268,7 +268,7 @@ function SwayGroup({ children, phase = 0, strength = 0.025 }) {
 
 function RoseDisplay({ active, onOpen }) {
   return (
-    <BotanicalGroup id="rose" position={[-1.72, 0, 0.03]} active={active} onOpen={onOpen}>
+    <BotanicalGroup id="rose" position={[-2.05, 0, 0.03]} active={active} onOpen={onOpen}>
       <SwayGroup phase={0.3} strength={0.016}>
         <CurvedStem
           points={[
@@ -310,6 +310,28 @@ function RoseDisplay({ active, onOpen }) {
           head={[0.66, 1.37, 0.04]}
           rotation={[0.9, 0.34, 0.14]}
           scale={0.42}
+        />
+        <RoseSideBloom
+          points={[
+            [-0.01, 0.34, 0.0],
+            [-0.18, 0.62, 0.14],
+            [-0.42, 0.86, 0.2],
+            [-0.56, 1.05, 0.22],
+          ]}
+          head={[-0.6, 1.08, 0.23]}
+          rotation={[0.8, -0.28, -0.28]}
+          scale={0.34}
+        />
+        <RoseSideBloom
+          points={[
+            [0.02, 0.76, -0.02],
+            [0.22, 1.06, -0.1],
+            [0.38, 1.34, -0.16],
+            [0.52, 1.62, -0.18],
+          ]}
+          head={[0.56, 1.68, -0.18]}
+          rotation={[0.82, 0.52, 0.18]}
+          scale={0.36}
         />
       </SwayGroup>
     </BotanicalGroup>
@@ -721,16 +743,101 @@ function TulipArrangement({ active, onOpen }) {
         open: 0.44,
         scale: 0.68,
       },
+      {
+        id: "peach-front",
+        points: [
+          [0.0, 0.02, 0.14],
+          [0.22, 0.5, 0.24],
+          [0.42, 0.9, 0.28],
+          [0.54, 1.18, 0.3],
+        ],
+        head: [0.58, 1.22, 0.3],
+        rotation: [0.08, 0.3, 0.18],
+        baseColor: "#fff0bf",
+        tipColor: "#f79b8d",
+        edgeColor: "#db5d78",
+        veinColor: "#b86666",
+        open: 0.5,
+        scale: 0.66,
+      },
+      {
+        id: "pale-violet-back",
+        points: [
+          [0.03, 0.02, -0.12],
+          [-0.18, 0.66, -0.2],
+          [-0.42, 1.12, -0.26],
+          [-0.54, 1.52, -0.32],
+        ],
+        head: [-0.58, 1.56, -0.33],
+        rotation: [-0.04, -0.2, -0.08],
+        baseColor: "#f8e7cf",
+        tipColor: "#bfa2df",
+        edgeColor: "#8a6eb5",
+        veinColor: "#80639e",
+        open: 0.34,
+        scale: 0.7,
+      },
+      {
+        id: "ruby-low",
+        points: [
+          [0.06, 0.02, 0.06],
+          [0.36, 0.42, 0.04],
+          [0.72, 0.76, 0.02],
+          [0.94, 1.02, 0.04],
+        ],
+        head: [0.98, 1.06, 0.04],
+        rotation: [0.02, 0.58, 0.28],
+        baseColor: "#f1a0c6",
+        tipColor: "#c0196b",
+        edgeColor: "#7d134c",
+        veinColor: "#8a2857",
+        open: 0.42,
+        scale: 0.6,
+      },
+      {
+        id: "ivory-tall",
+        points: [
+          [-0.02, 0.02, -0.04],
+          [0.08, 0.82, -0.18],
+          [0.18, 1.62, -0.32],
+          [0.28, 2.26, -0.42],
+        ],
+        head: [0.3, 2.3, -0.42],
+        rotation: [-0.08, 0.12, 0.04],
+        baseColor: "#fff7d9",
+        tipColor: "#f4d2df",
+        edgeColor: "#d78baa",
+        veinColor: "#c5899f",
+        open: 0.28,
+        scale: 0.74,
+      },
+      {
+        id: "blush-left-low",
+        points: [
+          [-0.04, 0.02, 0.12],
+          [-0.36, 0.4, 0.22],
+          [-0.78, 0.72, 0.28],
+          [-1.12, 0.94, 0.3],
+        ],
+        head: [-1.16, 0.98, 0.3],
+        rotation: [0.08, -0.62, -0.32],
+        baseColor: "#ffe8c8",
+        tipColor: "#ec7fb5",
+        edgeColor: "#c44d85",
+        veinColor: "#b45d86",
+        open: 0.62,
+        scale: 0.56,
+      },
     ],
     [],
   );
 
   return (
-    <BotanicalGroup id="tulip" position={[0.18, 0.02, 0]} active={active} onOpen={onOpen}>
+    <BotanicalGroup id="tulip" position={[0, 0.02, 0]} active={active} onOpen={onOpen}>
       <SwayGroup phase={1.4} strength={0.018}>
         {tulips.map((tulip, index) => (
           <group key={tulip.id}>
-            <CurvedStem points={tulip.points} radius={0.022 - index * 0.0015} color="#719c48" roughness={0.42} />
+            <CurvedStem points={tulip.points} radius={Math.max(0.008, 0.022 - index * 0.001)} color="#719c48" roughness={0.42} />
             <group position={tulip.head} rotation={tulip.rotation} scale={tulip.scale}>
               <TulipBloom {...tulip} />
             </group>
@@ -902,6 +1009,39 @@ function LilyArrangement({ active, onOpen }) {
         rotation: [0.7, 0.04, -0.06],
         scale: 0.56,
       },
+      {
+        id: "front-lily",
+        points: [
+          [0.02, 0.04, 0.08],
+          [-0.16, 0.5, 0.22],
+          [-0.36, 0.86, 0.3],
+        ],
+        head: [-0.42, 0.92, 0.32],
+        rotation: [0.7, -0.66, -0.24],
+        scale: 0.5,
+      },
+      {
+        id: "back-lily",
+        points: [
+          [0, 0.04, -0.06],
+          [0.28, 0.78, -0.18],
+          [0.58, 1.44, -0.34],
+        ],
+        head: [0.62, 1.5, -0.36],
+        rotation: [0.64, 0.76, 0.24],
+        scale: 0.52,
+      },
+      {
+        id: "side-lily",
+        points: [
+          [0.0, 0.04, 0.02],
+          [-0.36, 0.82, -0.1],
+          [-0.86, 1.3, -0.16],
+        ],
+        head: [-0.9, 1.36, -0.16],
+        rotation: [0.6, -0.72, -0.12],
+        scale: 0.48,
+      },
     ],
     [],
   );
@@ -941,12 +1081,34 @@ function LilyArrangement({ active, onOpen }) {
         rotation: [0.08, -0.42, -0.28],
         scale: 0.82,
       },
+      {
+        id: "front-bud",
+        points: [
+          [0.02, 0.04, 0.04],
+          [0.18, 0.54, 0.22],
+          [0.34, 0.94, 0.34],
+        ],
+        position: [0.38, 1.02, 0.36],
+        rotation: [0.12, 0.52, 0.3],
+        scale: 0.66,
+      },
+      {
+        id: "back-bud",
+        points: [
+          [-0.02, 0.04, -0.02],
+          [-0.18, 0.74, -0.2],
+          [-0.42, 1.3, -0.36],
+        ],
+        position: [-0.46, 1.38, -0.38],
+        rotation: [0.05, -0.36, -0.18],
+        scale: 0.72,
+      },
     ],
     [],
   );
 
   return (
-    <BotanicalGroup id="lily" position={[1.82, 0.02, -0.04]} active={active} onOpen={onOpen}>
+    <BotanicalGroup id="lily" position={[2.12, 0.02, -0.04]} active={active} onOpen={onOpen}>
       <SwayGroup phase={2.2} strength={0.015}>
         <CurvedStem
           points={[
