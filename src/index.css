@@ -1445,8 +1445,12 @@ button {
 
 .message-modal {
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: min(100%, 620px);
+  max-height: calc(100dvh - 40px);
   padding: 30px;
+  overflow: hidden;
   border: 1px solid rgba(184, 237, 255, 0.2);
   border-radius: 8px;
   background:
@@ -1466,7 +1470,31 @@ button {
 }
 
 .message-modal h2 {
+  flex: 0 0 auto;
   margin-bottom: 18px;
+}
+
+.message-modal .panel-kicker {
+  flex: 0 0 auto;
+}
+
+.message-modal p {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.message-modal p::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-modal p::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(141, 131, 255, 0.32);
 }
 
 .gallery-hint {
