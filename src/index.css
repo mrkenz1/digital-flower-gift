@@ -2047,6 +2047,80 @@ button {
   top: 7%;
 }
 
+.gallery-actions,
+.gallery-hint {
+  transition:
+    opacity 260ms ease,
+    visibility 260ms ease,
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-actions {
+  bottom: 74px;
+}
+
+.gallery-hint {
+  bottom: 148px;
+}
+
+.gallery-panel-toggle {
+  position: absolute;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 18px);
+  z-index: 28;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 14px;
+  color: rgba(37, 42, 70, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.38);
+  box-shadow:
+    0 14px 36px rgba(111, 102, 153, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  font-size: 0.86rem;
+  font-weight: 850;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  backdrop-filter: blur(18px);
+  transition:
+    bottom 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease;
+}
+
+.gallery-panel-toggle:hover {
+  color: #20243f;
+  border-color: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 0 28px rgba(141, 131, 255, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.gallery-panel-toggle svg {
+  flex: 0 0 auto;
+}
+
+.gallery-ui.controls-hidden .gallery-hint {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 72px);
+  pointer-events: none;
+}
+
+.gallery-ui.controls-hidden .gallery-actions {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(100% + 110px));
+  pointer-events: none;
+}
+
 @media (max-width: 760px) {
   .orbital-flower-scene {
     background:
@@ -2059,5 +2133,30 @@ button {
   .orbital-flower-scene .flower-canvas {
     inset: -4% 0 11%;
     height: 93% !important;
+  }
+
+  .gallery-actions {
+    bottom: calc(env(safe-area-inset-bottom) + 64px);
+  }
+
+  .gallery-hint {
+    bottom: calc(env(safe-area-inset-bottom) + 284px);
+  }
+
+  .gallery-panel-toggle {
+    bottom: calc(env(safe-area-inset-bottom) + 12px);
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: 0.8rem;
+  }
+
+  .gallery-ui.controls-hidden .gallery-actions {
+    transform: translate(-50%, calc(100% + 96px));
+  }
+}
+
+@media (max-width: 420px) {
+  .gallery-hint {
+    bottom: calc(env(safe-area-inset-bottom) + 284px);
   }
 }

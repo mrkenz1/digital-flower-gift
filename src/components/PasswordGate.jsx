@@ -47,8 +47,8 @@ function PasswordGate({ onUnlock }) {
 
         <div className="gate-copy">
           <span className="eyebrow">Дэлгэрмаад</span>
-          <h1>Нууц ертөнц</h1>
-          <p>Чамд зориулсан гэрэлт ертөнц .</p>
+          <h1>secret world</h1>
+          <p> Нээгээл үз .</p>
         </div>
 
         <label className="password-label" htmlFor="password">
@@ -61,7 +61,7 @@ function PasswordGate({ onUnlock }) {
             type="password"
             autoComplete="off"
             inputMode="text"
-            placeholder="таалда"
+            placeholder="таалда бас сонирхолтой шд"
             onChange={(event) => {
               setPassword(event.target.value);
               setHasError(false);

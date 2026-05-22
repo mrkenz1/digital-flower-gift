@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import BackgroundMusic from "./components/BackgroundMusic.jsx";
 import FlowerInfoPanel from "./components/FlowerInfoPanel.jsx";
@@ -18,6 +19,7 @@ function App() {
   const [focusToken, setFocusToken] = useState(0);
   const [isMessageOpen, setIsMessageOpen] = useState(false);
   const [isQrOpen, setIsQrOpen] = useState(false);
+  const [isControlsHidden, setIsControlsHidden] = useState(false);
 
   const unlockExperience = useCallback(() => {
     setPhase("loading");
@@ -69,24 +71,42 @@ function App() {
               onFlowerOpen={openFlowerInfo}
             />
 
-            <div className="gallery-ui" aria-live="polite">
-              <p className="gallery-hint">Цэцгэн дээр дарж утгыг нь нээгээрэй</p>
+            <div className={isControlsHidden ? "gallery-ui controls-hidden" : "gallery-ui"} aria-live="polite">
+              <p className="gallery-hint" aria-hidden={isControlsHidden}>
+                Цэцгэн дээр дарж утгыг нь нээгээрэй
+              </p>
 
               <BackgroundMusic />
 
-              <div className="gallery-actions">
+              <div className="gallery-actions" aria-hidden={isControlsHidden} inert={isControlsHidden ? "" : undefined}>
                 <FlowerSelector selectedFlower={selectedFlower} onSelect={focusFlower} />
                 <button
                   type="button"
                   className="final-message-button"
                   onClick={() => setIsMessageOpen(true)}
+                  tabIndex={isControlsHidden ? -1 : 0}
                 >
-                  Нандин зурвас
+                  Зурвас
                 </button>
-                <button type="button" className="qr-open-button" onClick={() => setIsQrOpen(true)}>
+                <button
+                  type="button"
+                  className="qr-open-button"
+                  onClick={() => setIsQrOpen(true)}
+                  tabIndex={isControlsHidden ? -1 : 0}
+                >
                   QR
                 </button>
               </div>
+
+              <button
+                type="button"
+                className="gallery-panel-toggle"
+                onClick={() => setIsControlsHidden((current) => !current)}
+                aria-expanded={!isControlsHidden}
+              >
+                {isControlsHidden ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                <span>{isControlsHidden ? "Гаргах" : "Нуух"}</span>
+              </button>
 
               <FlowerInfoPanel
                 openedFlowerInfo={openedFlowerInfo}
