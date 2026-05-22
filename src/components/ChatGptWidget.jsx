@@ -10,13 +10,16 @@ const STARTER_MESSAGES = [
   },
 ];
 
-// This is a frontend-only demo chatbot for GitHub Pages.
-// To connect real ChatGPT later, call your own backend/API route from getLocalReply().
+// GitHub Pages cannot safely store API keys. Set this to your backend URL:
+// VITE_CHAT_API_URL=https://your-backend.vercel.app/api/chat
+const CHAT_API_URL =
+  import.meta.env.VITE_CHAT_API_URL || "";
+
 function getLocalReply(message) {
   const text = message.toLowerCase();
 
   if (text.includes("api") || text.includes("chatgpt") || text.includes("үнэгүй") || text.includes("holbo")) {
-    return "Жинхэнэ ChatGPT API-г шууд frontend дээр үнэгүй, нууц key ил гаргахгүйгээр холбох боломжгүй. Харин энэ UI бэлэн байгаа, дараа нь backend эсвэл serverless function нэмээд real ChatGPT-тэй залгаж болно.";
+    return "Жинхэнэ ChatGPT API-г frontend дээр шууд хийхгүй. API key ил харагдах учраас backend/serverless endpoint хэрэгтэй. Одоо код нь endpoint байвал OpenAI API руу холбогдохоор бэлэн болсон.";
   }
 
   if (text.includes("сарнай") || text.includes("rose")) {
@@ -32,18 +35,44 @@ function getLocalReply(message) {
   }
 
   if (text.includes("qr")) {
-    return "Доод талын QR товчийг дарвал live link-ийн QR гарна. Тэндээс татаж авах боломжтой.";
+    return "Доод талын QR товчийг дарвал live link-ийн QR гарна. Тэндээс QR зургаа татаж авч болно.";
   }
 
   if (text.includes("зурвас") || text.includes("message")) {
-    return "Зурвас товчийг дарвал урт захиа modal дээр нээгдэнэ. Текст нь одоо дотроо scroll хийж уншигдана.";
+    return "Зурвас товчийг дарвал урт захиа modal дээр нээгдэнэ. Текст нь дотроо scroll хийж уншигдана.";
   }
 
   if (text.includes("дуу") || text.includes("music") || text.includes("хөгжим")) {
-    return "Баруун дээд талын хөгжимний товчоор дуугаа play, pause, mute хийж болно. Browser зөвшөөрөхийн тулд эхлээд хэрэглэгч товч дарах хэрэгтэй.";
+    return "Баруун дээд талын хөгжимний товчоор дуугаа play, pause, mute хийж болно.";
   }
 
-  return "Ойлголоо. Энэ бол frontend demo туслах болохоор цэцэг, QR, хөгжим, зурвас, deploy-ийн тухай богино зөвлөгөө өгч чадна.";
+  return "Ойлголоо. Одоогоор endpoint тохируулаагүй үед би demo горимоор цэцэг, QR, хөгжим, зурвасын тухай товч тусална.";
+}
+
+async function requestChatReply(messages) {
+  if (!CHAT_API_URL) {
+    throw new Error("Chat API endpoint is not configured.");
+  }
+
+  const response = await fetch(CHAT_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ messages }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data?.error || "AI API request failed.");
+  }
+
+  if (!data?.reply) {
+    throw new Error("AI API response did not include a reply.");
+  }
+
+  return data.reply;
 }
 
 function OpenAiMark() {
@@ -61,6 +90,7 @@ function ChatGptWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState(STARTER_MESSAGES);
   const [draft, setDraft] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -69,22 +99,35 @@ function ChatGptWidget() {
     }
 
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [messages, isOpen]);
+  }, [messages, isOpen, isLoading]);
 
-  const sendMessage = (event) => {
+  const sendMessage = async (event) => {
     event.preventDefault();
     const trimmed = draft.trim();
 
-    if (!trimmed) {
+    if (!trimmed || isLoading) {
       return;
     }
 
-    setMessages((current) => [
-      ...current,
-      { role: "user", text: trimmed },
-      { role: "assistant", text: getLocalReply(trimmed) },
-    ]);
+    const userMessage = { role: "user", text: trimmed };
+    const nextMessages = [...messages, userMessage];
+
+    setMessages(nextMessages);
     setDraft("");
+    setIsLoading(true);
+
+    try {
+      const reply = await requestChatReply(nextMessages);
+      setMessages((current) => [...current, { role: "assistant", text: reply }]);
+    } catch (error) {
+      const fallbackReply = CHAT_API_URL
+        ? `API алдаа гарлаа: ${error instanceof Error ? error.message : "дахин оролдоорой."}`
+        : getLocalReply(trimmed);
+
+      setMessages((current) => [...current, { role: "assistant", text: fallbackReply }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -121,6 +164,7 @@ function ChatGptWidget() {
               <div>
                 <span>Flower AI</span>
                 <strong>Chat guide</strong>
+                <small>{CHAT_API_URL ? "OpenAI API ready" : "Demo mode"}</small>
               </div>
               <button type="button" onClick={() => setIsOpen(false)} aria-label="Close AI chat">
                 <X size={17} />
@@ -133,6 +177,7 @@ function ChatGptWidget() {
                   {message.text}
                 </p>
               ))}
+              {isLoading && <p className="ai-chat-bubble assistant thinking">AI бодож байна...</p>}
             </div>
 
             <div className="ai-chat-prompts">
@@ -149,8 +194,9 @@ function ChatGptWidget() {
                 onChange={(event) => setDraft(event.target.value)}
                 placeholder="Асуух зүйлээ бич..."
                 aria-label="AI chat message"
+                disabled={isLoading}
               />
-              <button type="submit" aria-label="Send message">
+              <button type="submit" aria-label="Send message" disabled={isLoading}>
                 <SendHorizontal size={17} />
               </button>
             </form>

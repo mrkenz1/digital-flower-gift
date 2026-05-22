@@ -1486,6 +1486,12 @@ button {
   font-size: 1.04rem;
 }
 
+.ai-chat-header small {
+  color: rgba(40, 45, 76, 0.56);
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
 .ai-chat-header button,
 .ai-chat-form button,
 .ai-chat-prompts button {
@@ -1542,6 +1548,10 @@ button {
   background: rgba(255, 255, 255, 0.5);
 }
 
+.ai-chat-bubble.thinking {
+  opacity: 0.72;
+}
+
 .ai-chat-bubble.user {
   justify-self: end;
   color: #ffffff;
@@ -1590,6 +1600,12 @@ button {
   min-height: 42px;
   padding: 0;
   --accent: #8d83ff;
+}
+
+.ai-chat-form input:disabled,
+.ai-chat-form button:disabled {
+  cursor: wait;
+  opacity: 0.62;
 }
 
 .ai-chat-header button:hover,
