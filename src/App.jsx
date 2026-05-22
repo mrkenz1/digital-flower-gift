@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import BackgroundMusic from "./components/BackgroundMusic.jsx";
+import ChatGptWidget from "./components/ChatGptWidget.jsx";
 import FlowerInfoPanel from "./components/FlowerInfoPanel.jsx";
 import FlowerScene from "./components/FlowerScene.jsx";
 import FlowerSelector from "./components/FlowerSelector.jsx";
@@ -77,6 +78,7 @@ function App() {
               </p>
 
               <BackgroundMusic />
+              <ChatGptWidget />
 
               <div className="gallery-actions" aria-hidden={isControlsHidden} inert={isControlsHidden ? "" : undefined}>
                 <FlowerSelector selectedFlower={selectedFlower} onSelect={focusFlower} />
