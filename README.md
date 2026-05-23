@@ -28,45 +28,6 @@ npm run dev
 
 Open the local URL printed by Vite.
 
-## Connect The ChatGPT API
-
-The floating AI chat button is frontend UI, but the real OpenAI API must run through a backend/serverless endpoint. Do not put `OPENAI_API_KEY` inside React code because visitors can inspect it.
-
-This project includes a serverless endpoint:
-
-```text
-api/chat.js
-```
-
-Deploy that endpoint to a provider that supports serverless functions, such as Vercel. Add these environment variables in the provider dashboard:
-
-```text
-OPENAI_API_KEY=your_openai_api_key
-OPENAI_MODEL=gpt-5-mini
-ALLOWED_ORIGIN=https://mrkenz1.github.io
-```
-
-After the backend is deployed, copy its URL, for example:
-
-```text
-https://your-backend.vercel.app/api/chat
-```
-
-Then build the GitHub Pages frontend with:
-
-```bash
-VITE_CHAT_API_URL=https://your-backend.vercel.app/api/chat npm run deploy
-```
-
-On Windows PowerShell:
-
-```powershell
-$env:VITE_CHAT_API_URL="https://your-backend.vercel.app/api/chat"
-npm run deploy
-```
-
-If `VITE_CHAT_API_URL` is not set, the chat stays in safe demo mode.
-
 ## Change The Password
 
 Open `src/components/PasswordGate.jsx` and edit:
@@ -95,6 +56,20 @@ src/components/FlowerScene.jsx
 ```
 
 You can tune flower placement in `FLOWER_POSITIONS`, and adjust the rock, crystals, icicles, petals, colors, and lighting inside the same file.
+
+## Day And Night Mode
+
+The gallery has a day/night switch in the top-left corner.
+
+- Day mode keeps the soft pastel cloudy background.
+- Night mode changes the scene to a deep starry sky with moving stars, a blue Milky Way glow, and shooting star animations.
+
+You can adjust the switch UI and night sky animation in:
+
+```text
+src/components/ThemeSwitch.jsx
+src/index.css
+```
 
 ## Replace Or Disable Background Music
 

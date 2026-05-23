@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import BackgroundMusic from "./components/BackgroundMusic.jsx";
-import ChatGptWidget from "./components/ChatGptWidget.jsx";
 import FlowerInfoPanel from "./components/FlowerInfoPanel.jsx";
 import FlowerScene from "./components/FlowerScene.jsx";
 import FlowerSelector from "./components/FlowerSelector.jsx";
@@ -10,6 +9,7 @@ import LoadingScreen from "./components/LoadingScreen.jsx";
 import PasswordGate from "./components/PasswordGate.jsx";
 import QRCodeModal from "./components/QRCodeModal.jsx";
 import RomanticMessageModal from "./components/RomanticMessageModal.jsx";
+import ThemeSwitch from "./components/ThemeSwitch.jsx";
 
 const LOADING_DURATION_MS = 2200;
 
@@ -21,6 +21,7 @@ function App() {
   const [isMessageOpen, setIsMessageOpen] = useState(false);
   const [isQrOpen, setIsQrOpen] = useState(false);
   const [isControlsHidden, setIsControlsHidden] = useState(false);
+  const [isNightMode, setIsNightMode] = useState(false);
 
   const unlockExperience = useCallback(() => {
     setPhase("loading");
@@ -59,7 +60,7 @@ function App() {
         {phase === "gallery" && (
           <motion.main
             key="gallery"
-            className="gallery-shell"
+            className={isNightMode ? "gallery-shell theme-night" : "gallery-shell theme-day"}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -71,14 +72,24 @@ function App() {
               focusToken={focusToken}
               onFlowerOpen={openFlowerInfo}
             />
+            <div className="night-sky-effects" aria-hidden="true">
+              <span className="night-stars night-stars-a" />
+              <span className="night-stars night-stars-b" />
+              <span className="night-stars night-stars-c" />
+              <span className="night-milky-way" />
+              <span className="night-shooting-star shooting-one" />
+              <span className="night-shooting-star shooting-two" />
+              <span className="night-shooting-star shooting-three" />
+            </div>
 
             <div className={isControlsHidden ? "gallery-ui controls-hidden" : "gallery-ui"} aria-live="polite">
+              <ThemeSwitch isNightMode={isNightMode} onChange={setIsNightMode} />
+
               <p className="gallery-hint" aria-hidden={isControlsHidden}>
                 Цэцгэн дээр дарж утгыг нь нээгээрэй
               </p>
 
               <BackgroundMusic />
-              <ChatGptWidget />
 
               <div className="gallery-actions" aria-hidden={isControlsHidden} inert={isControlsHidden ? "" : undefined}>
                 <FlowerSelector selectedFlower={selectedFlower} onSelect={focusFlower} />
