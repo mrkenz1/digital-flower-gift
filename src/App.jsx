@@ -12,6 +12,16 @@ import RomanticMessageModal from "./components/RomanticMessageModal.jsx";
 import ThemeSwitch from "./components/ThemeSwitch.jsx";
 
 const LOADING_DURATION_MS = 2200;
+const FIREFLY_POINTS = [
+  [14, 72, 0.1, 0.92],
+  [22, 58, 1.4, 0.72],
+  [34, 78, 2.2, 0.82],
+  [46, 64, 0.8, 0.68],
+  [58, 74, 1.9, 0.9],
+  [70, 56, 0.4, 0.76],
+  [82, 68, 2.7, 0.84],
+  [90, 48, 1.1, 0.62],
+];
 
 function App() {
   const [phase, setPhase] = useState("gate");
@@ -80,6 +90,18 @@ function App() {
               <span className="night-shooting-star shooting-one" />
               <span className="night-shooting-star shooting-two" />
               <span className="night-shooting-star shooting-three" />
+              {FIREFLY_POINTS.map(([x, y, delay, scale], index) => (
+                <span
+                  key={index}
+                  className="night-firefly"
+                  style={{
+                    "--x": `${x}%`,
+                    "--y": `${y}%`,
+                    "--delay": `${delay}s`,
+                    "--scale": scale,
+                  }}
+                />
+              ))}
             </div>
 
             <div className={isControlsHidden ? "gallery-ui controls-hidden" : "gallery-ui"} aria-live="polite">
