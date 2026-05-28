@@ -243,6 +243,393 @@ button {
   font-weight: 800;
 }
 
+.gate-screen {
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  color: #6d5567;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(221, 243, 255, 0.68), transparent 28%),
+    radial-gradient(ellipse at 84% 28%, rgba(255, 226, 232, 0.76), transparent 32%),
+    radial-gradient(ellipse at 50% 72%, rgba(255, 250, 224, 0.66), transparent 38%),
+    linear-gradient(145deg, #fff9ef 0%, #f4eef8 45%, #edf7ff 100%);
+}
+
+.gate-atmosphere,
+.gate-lines {
+  display: none;
+}
+
+.gate-dream-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gate-dream-field::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at 24% 26%, rgba(255, 255, 255, 0.78), transparent 14%),
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.62), transparent 16%),
+    radial-gradient(circle at 52% 84%, rgba(255, 255, 255, 0.62), transparent 20%);
+  filter: blur(16px);
+}
+
+.gate-cloud {
+  position: absolute;
+  width: clamp(130px, 18vw, 230px);
+  height: clamp(44px, 6vw, 76px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow:
+    36px -16px 0 6px rgba(255, 255, 255, 0.5),
+    76px 2px 0 9px rgba(255, 255, 255, 0.48),
+    -26px 9px 0 4px rgba(255, 255, 255, 0.44);
+  opacity: 0.84;
+  animation: gateCloudDrift 10s ease-in-out infinite;
+}
+
+.gate-cloud.cloud-one {
+  left: 9%;
+  top: 18%;
+}
+
+.gate-cloud.cloud-two {
+  right: 11%;
+  top: 31%;
+  --cloud-shift: -18px;
+  transform: scale(0.82);
+  animation-delay: -2.7s;
+}
+
+.gate-cloud.cloud-three {
+  left: 18%;
+  bottom: 15%;
+  --cloud-shift: 14px;
+  transform: scale(1.1);
+  animation-delay: -5.1s;
+}
+
+.gate-heart {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  background: rgba(217, 139, 168, 0.24);
+  transform: rotate(45deg);
+  animation: gateHeartFloat 7s ease-in-out infinite;
+}
+
+.gate-heart::before,
+.gate-heart::after {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  border-radius: 999px;
+  content: "";
+  background: inherit;
+}
+
+.gate-heart::before {
+  left: -50%;
+}
+
+.gate-heart::after {
+  top: -50%;
+}
+
+.heart-one {
+  left: 19%;
+  top: 12%;
+}
+
+.heart-two {
+  right: 23%;
+  top: 14%;
+  transform: rotate(45deg) scale(0.72);
+  animation-delay: -2s;
+}
+
+.heart-three {
+  right: 14%;
+  bottom: 23%;
+  transform: rotate(45deg) scale(0.64);
+  animation-delay: -4s;
+}
+
+.gate-moon {
+  position: absolute;
+  left: 42%;
+  top: 10%;
+  width: 66px;
+  height: 66px;
+  border-radius: 999px;
+  border: 3px solid rgba(148, 120, 128, 0.18);
+  border-right-color: transparent;
+  background: transparent;
+  opacity: 0.55;
+  transform: rotate(-22deg);
+  animation: gateMoonRock 8s ease-in-out infinite;
+}
+
+.gate-flower {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  opacity: 0.68;
+  background:
+    radial-gradient(circle at center, #d8a94c 0 11%, transparent 12%),
+    radial-gradient(ellipse at 50% 12%, rgba(255, 255, 255, 0.8) 0 17%, transparent 18%),
+    radial-gradient(ellipse at 88% 50%, rgba(255, 255, 255, 0.78) 0 17%, transparent 18%),
+    radial-gradient(ellipse at 50% 88%, rgba(255, 255, 255, 0.78) 0 17%, transparent 18%),
+    radial-gradient(ellipse at 12% 50%, rgba(255, 255, 255, 0.78) 0 17%, transparent 18%);
+  filter: drop-shadow(0 8px 18px rgba(176, 130, 156, 0.12));
+  animation: gateFlowerFloat 8.5s ease-in-out infinite;
+}
+
+.flower-one {
+  left: 9%;
+  bottom: 7%;
+}
+
+.flower-two {
+  right: 16%;
+  bottom: 11%;
+  transform: scale(0.72);
+  animation-delay: -3s;
+}
+
+.password-card {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: min(100%, 310px);
+  place-items: center;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: center;
+  backdrop-filter: none;
+}
+
+.password-card::before,
+.card-orbit {
+  display: none;
+}
+
+.gate-lock-illustration {
+  position: relative;
+  width: 112px;
+  height: 106px;
+  margin-bottom: 8px;
+}
+
+.gate-lock-heart {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  width: 78px;
+  height: 78px;
+  place-items: center;
+  color: rgba(108, 92, 103, 0.78);
+  filter: drop-shadow(0 16px 22px rgba(128, 102, 116, 0.16));
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.gate-lock-heart::before {
+  position: absolute;
+  inset: 0;
+  border: 3px solid rgba(105, 91, 104, 0.34);
+  border-radius: 22px 22px 10px 22px;
+  content: "";
+  background:
+    radial-gradient(circle at 28% 28%, rgba(255, 255, 255, 0.74), transparent 18%),
+    rgba(255, 255, 255, 0.2);
+}
+
+.gate-lock-heart svg {
+  position: relative;
+  z-index: 1;
+  transform: rotate(45deg);
+}
+
+.gate-key {
+  position: absolute;
+  right: 10px;
+  top: 19px;
+  width: 46px;
+  height: 18px;
+  border: 3px solid rgba(105, 91, 104, 0.34);
+  border-left-width: 0;
+  border-radius: 999px;
+  transform: rotate(-36deg);
+}
+
+.gate-key::before {
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(105, 91, 104, 0.34);
+  border-radius: 999px;
+  content: "";
+  transform: translateY(-50%);
+}
+
+.gate-key::after {
+  position: absolute;
+  right: -2px;
+  top: 11px;
+  width: 12px;
+  height: 9px;
+  border-right: 3px solid rgba(105, 91, 104, 0.34);
+  border-bottom: 3px solid rgba(105, 91, 104, 0.34);
+  content: "";
+}
+
+.gate-copy {
+  z-index: 1;
+  display: grid;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.gate-copy .eyebrow {
+  margin: 0;
+  color: rgba(121, 91, 105, 0.72);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.gate-copy h1 {
+  margin: 0;
+  color: rgba(84, 70, 82, 0.86);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.1rem, 3vw, 1.45rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.gate-copy p {
+  max-width: none;
+  margin: 0;
+  color: rgba(116, 91, 104, 0.62);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.7rem;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.password-display {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+  margin-bottom: 10px;
+}
+
+.password-dot {
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(117, 94, 106, 0.36);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.password-dot.filled {
+  border-color: rgba(155, 103, 128, 0.62);
+  background: rgba(181, 118, 145, 0.74);
+  box-shadow: 0 0 12px rgba(181, 118, 145, 0.28);
+  transform: scale(1.16);
+}
+
+.password-dot.error {
+  border-color: rgba(201, 80, 99, 0.7);
+  background: rgba(201, 80, 99, 0.7);
+}
+
+.password-dot.success {
+  border-color: rgba(103, 158, 128, 0.76);
+  background: rgba(103, 158, 128, 0.76);
+  box-shadow: 0 0 14px rgba(103, 158, 128, 0.36);
+}
+
+.password-error {
+  min-height: 18px;
+  margin: -2px 0 8px;
+  color: rgba(162, 74, 91, 0.88);
+  font-size: 0.72rem;
+}
+
+.gate-keypad {
+  display: grid;
+  width: min(100%, 174px);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.gate-keypad-button {
+  display: grid;
+  width: 54px;
+  height: 34px;
+  place-items: center;
+  padding: 0;
+  color: rgba(78, 68, 80, 0.82);
+  border: 1px solid rgba(137, 118, 128, 0.34);
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(240, 225, 232, 0.56)),
+    rgba(255, 255, 255, 0.48);
+  box-shadow:
+    0 3px 0 rgba(148, 123, 136, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  font-size: 0.9rem;
+  font-weight: 750;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background 120ms ease;
+}
+
+.gate-keypad-button:hover {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(244, 226, 236, 0.72)),
+    rgba(255, 255, 255, 0.58);
+  transform: translateY(-1px);
+}
+
+.gate-keypad-button:active {
+  box-shadow:
+    0 1px 0 rgba(148, 123, 136, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  transform: translateY(2px);
+}
+
+.gate-keypad-button.utility {
+  color: rgba(92, 78, 88, 0.58);
+  font-size: 0.82rem;
+}
+
+.gate-shake {
+  animation: gateShake 280ms ease-in-out;
+}
+
 .loading-screen {
   background:
     radial-gradient(ellipse at 50% 42%, rgba(255, 255, 255, 0.86), transparent 30%),
@@ -2984,14 +3371,75 @@ button {
   }
 }
 
+@keyframes gateCloudDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(var(--cloud-scale, 1));
+  }
+
+  50% {
+    transform: translate3d(var(--cloud-shift, 18px), -8px, 0) scale(var(--cloud-scale, 1));
+  }
+}
+
+@keyframes gateHeartFloat {
+  0%,
+  100% {
+    opacity: 0.16;
+    transform: translate3d(0, 10px, 0) rotate(45deg) scale(0.78);
+  }
+
+  50% {
+    opacity: 0.28;
+    transform: translate3d(0, -8px, 0) rotate(45deg) scale(0.92);
+  }
+}
+
+@keyframes gateMoonRock {
+  0%,
+  100% {
+    transform: rotate(-22deg) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: rotate(-16deg) translate3d(4px, -6px, 0);
+  }
+}
+
+@keyframes gateFlowerFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-3deg);
+  }
+
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(5deg);
+  }
+}
+
+@keyframes gateShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-7px);
+  }
+
+  75% {
+    transform: translateX(7px);
+  }
+}
+
 @media (max-width: 760px) {
   .gate-screen,
   .loading-screen {
     padding: 16px;
   }
 
-  .password-card {
-    padding: 26px 20px;
+  .gate-screen .password-card {
+    padding: 0;
   }
 
   .gallery-topline {
