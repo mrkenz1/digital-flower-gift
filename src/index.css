@@ -630,6 +630,379 @@ button {
   animation: gateShake 280ms ease-in-out;
 }
 
+.gate-screen {
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  overflow: hidden;
+  color: rgba(55, 52, 56, 0.74);
+  background: #f8f3ef;
+  font-family: "Trebuchet MS", "Comic Sans MS", Arial, sans-serif;
+}
+
+.gate-bg-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(248, 243, 239, 0.1)),
+    url("./assets/day-castle-background.png") center / cover no-repeat;
+  filter: saturate(1.04) brightness(1.02);
+  pointer-events: none;
+}
+
+.gate-bg-image::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at 8% 10%, rgba(255, 220, 140, 0.28), transparent 24%),
+    radial-gradient(circle at 28% 78%, rgba(207, 198, 255, 0.3), transparent 35%),
+    radial-gradient(circle at 55% 16%, rgba(255, 205, 235, 0.22), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(246, 238, 229, 0.12));
+}
+
+.gate-dream-field {
+  z-index: 1;
+}
+
+.gate-dream-field::before {
+  opacity: 0.22;
+  background-image: radial-gradient(rgba(90, 80, 90, 0.18) 1px, transparent 1px);
+  background-size: 24px 24px;
+  filter: none;
+}
+
+.gate-dream-field::after {
+  position: absolute;
+  inset: -20%;
+  content: "";
+  background:
+    radial-gradient(circle at 22% 42%, rgba(255, 255, 255, 0.3), transparent 18%),
+    radial-gradient(circle at 70% 52%, rgba(255, 255, 255, 0.32), transparent 21%),
+    radial-gradient(circle at 48% 25%, rgba(255, 255, 255, 0.24), transparent 18%);
+  filter: blur(22px);
+  animation: gateBgMove 13s ease-in-out infinite alternate;
+}
+
+.gate-dot {
+  position: absolute;
+  z-index: 2;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(115, 110, 112, 0.35);
+  animation: gateDotFloat 4s ease-in-out infinite;
+}
+
+.dot-one { left: 20%; top: 18%; }
+.dot-two { left: 36%; top: 22%; animation-delay: -1s; }
+.dot-three { right: 26%; top: 20%; animation-delay: -2s; }
+.dot-four { left: 13%; top: 54%; animation-delay: -1.5s; }
+.dot-five { right: 18%; top: 64%; animation-delay: -2.5s; }
+.dot-six { right: 36%; bottom: 31%; animation-delay: -3s; }
+
+.gate-cloud {
+  position: absolute;
+  z-index: 1;
+  width: 330px;
+  height: 145px;
+  opacity: 0.56;
+  background: transparent;
+  box-shadow: none;
+  filter:
+    drop-shadow(0 12px 16px rgba(100, 95, 100, 0.12))
+    blur(0.1px);
+  animation: gateCloudDrift 7s ease-in-out infinite;
+  --cloud-scale: 1;
+  --cloud-rotate: 0deg;
+}
+
+.gate-cloud .puff {
+  position: absolute;
+  border: 2px solid rgba(145, 140, 145, 0.17);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.35) 56%, rgba(230, 230, 230, 0.22));
+  box-shadow:
+    inset 8px 8px 18px rgba(255, 255, 255, 0.55),
+    inset -12px -14px 18px rgba(120, 120, 120, 0.08);
+}
+
+.gate-cloud .p1 {
+  left: 0;
+  bottom: 25px;
+  width: 110px;
+  height: 85px;
+}
+
+.gate-cloud .p2 {
+  left: 55px;
+  bottom: 42px;
+  width: 145px;
+  height: 120px;
+}
+
+.gate-cloud .p3 {
+  left: 148px;
+  bottom: 45px;
+  width: 145px;
+  height: 100px;
+}
+
+.gate-cloud .cloud-base {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  height: 78px;
+  border: 2px solid rgba(145, 140, 145, 0.15);
+  border-radius: 90px 100px 30px 30px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(230, 230, 235, 0.25));
+  box-shadow:
+    inset 0 -18px 22px rgba(125, 125, 135, 0.07),
+    inset 0 10px 18px rgba(255, 255, 255, 0.48);
+}
+
+.gate-cloud .cloud-shade {
+  position: absolute;
+  left: 68px;
+  bottom: 28px;
+  width: 165px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(120, 120, 130, 0.08);
+  filter: blur(8px);
+}
+
+.gate-cloud.cloud-one {
+  left: -3%;
+  top: 18%;
+  --cloud-scale: 0.86;
+  --cloud-rotate: -2deg;
+}
+
+.gate-cloud.cloud-two {
+  right: 8%;
+  top: 18%;
+  --cloud-scale: 0.72;
+  --cloud-rotate: -1deg;
+  animation-delay: -2s;
+}
+
+.gate-cloud.cloud-three {
+  right: 19%;
+  top: 35%;
+  --cloud-scale: 0.9;
+  --cloud-rotate: 1deg;
+  animation-delay: -4s;
+}
+
+.gate-cloud.cloud-four {
+  left: 5%;
+  bottom: 14%;
+  --cloud-scale: 1.08;
+  --cloud-rotate: -1deg;
+  animation-delay: -3s;
+}
+
+.gate-cloud.cloud-five {
+  right: -3%;
+  bottom: 9%;
+  --cloud-scale: 0.95;
+  --cloud-rotate: 1deg;
+  animation-delay: -5s;
+}
+
+.gate-heart {
+  width: 54px;
+  height: 54px;
+  opacity: 0.28;
+  background: rgba(255, 255, 255, 0.35);
+  outline: 2px solid rgba(130, 125, 130, 0.12);
+  animation: gateHeartFloat 5s ease-in-out infinite;
+}
+
+.heart-one {
+  left: 7%;
+  top: 8%;
+  transform: rotate(45deg) scale(0.72);
+}
+
+.heart-two {
+  right: 29%;
+  top: 19%;
+  transform: rotate(45deg) scale(0.72);
+  animation-delay: -2s;
+}
+
+.heart-three {
+  left: 18%;
+  top: 40%;
+  transform: rotate(45deg) scale(0.82);
+  animation-delay: -3s;
+}
+
+.gate-flower {
+  z-index: 3;
+  width: 72px;
+  height: 72px;
+  opacity: 0.64;
+  background:
+    radial-gradient(circle at center, rgba(220, 180, 65, 0.85) 0 12%, transparent 13%),
+    radial-gradient(ellipse at 50% 4%, rgba(255, 255, 255, 0.62) 0 19%, transparent 20%),
+    radial-gradient(ellipse at 93% 40%, rgba(255, 255, 255, 0.62) 0 19%, transparent 20%),
+    radial-gradient(ellipse at 75% 95%, rgba(255, 255, 255, 0.62) 0 19%, transparent 20%),
+    radial-gradient(ellipse at 25% 95%, rgba(255, 255, 255, 0.62) 0 19%, transparent 20%),
+    radial-gradient(ellipse at 7% 40%, rgba(255, 255, 255, 0.62) 0 19%, transparent 20%);
+}
+
+.flower-one {
+  left: 12%;
+  bottom: 6%;
+}
+
+.flower-two {
+  right: 26%;
+  bottom: 10%;
+  transform: scale(0.82);
+}
+
+.password-card {
+  z-index: 10;
+  width: 260px;
+  background: transparent;
+  font-family: "Trebuchet MS", "Comic Sans MS", Arial, sans-serif;
+}
+
+.gate-lock-illustration {
+  width: 116px;
+  height: 105px;
+  margin-bottom: 8px;
+  animation: gateLockFloat 3.2s ease-in-out infinite;
+}
+
+.gate-heart-lock {
+  position: absolute;
+  left: 4px;
+  top: -3px;
+  width: 104px;
+  height: 104px;
+}
+
+.gate-key-icon {
+  position: absolute;
+  right: -2px;
+  top: 10px;
+  width: 45px;
+  height: 45px;
+  opacity: 0.82;
+  transform: rotate(78deg);
+}
+
+.gate-copy {
+  gap: 0;
+  margin-bottom: 13px;
+  color: rgba(55, 52, 56, 0.74);
+  line-height: 1.25;
+}
+
+.gate-copy .eyebrow,
+.gate-copy h1,
+.gate-copy p {
+  color: inherit;
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.gate-copy .eyebrow {
+  font-size: 22px;
+}
+
+.gate-copy h1,
+.gate-copy p {
+  font-size: 16px;
+}
+
+.password-display {
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.password-dot {
+  width: 8px;
+  height: 8px;
+  border: 1.4px solid rgba(90, 86, 90, 0.55);
+  background: transparent;
+}
+
+.password-dot.filled,
+.password-dot.success {
+  border-color: rgba(90, 86, 90, 0.55);
+  background: rgba(90, 86, 90, 0.58);
+  box-shadow: none;
+}
+
+.password-dot.error {
+  border-color: rgba(160, 78, 92, 0.6);
+  background: rgba(160, 78, 92, 0.5);
+}
+
+.password-error,
+.password-success {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 12px);
+  width: max-content;
+  max-width: min(82vw, 280px);
+  margin: 0;
+  color: rgba(120, 85, 95, 0.82);
+  font-size: 13px;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.password-success {
+  color: rgba(71, 119, 91, 0.86);
+}
+
+.gate-keypad {
+  width: auto;
+  grid-template-columns: repeat(3, 59px);
+  gap: 10px;
+}
+
+.gate-keypad-button {
+  width: 59px;
+  height: 42px;
+  color: rgba(50, 48, 52, 0.72);
+  border: 1px solid rgba(105, 100, 105, 0.28);
+  border-radius: 9px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(219, 219, 228, 0.4));
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.85),
+    0 3px 8px rgba(95, 90, 100, 0.1);
+  font-size: 19px;
+  font-weight: 400;
+  backdrop-filter: blur(8px);
+}
+
+.gate-keypad-button:hover {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(225, 225, 235, 0.5));
+}
+
+.gate-keypad-button.empty {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gate-keypad-button.utility {
+  font-size: 17px;
+}
+
 .loading-screen {
   background:
     radial-gradient(ellipse at 50% 42%, rgba(255, 255, 255, 0.86), transparent 30%),
@@ -1581,7 +1954,7 @@ button {
 .theme-day .orbital-flower-scene {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 244, 218, 0.08)),
-    url("./assets/day-castle-background.svg") center / cover no-repeat;
+    url("./assets/day-castle-background.png") center / cover no-repeat;
 }
 
 .theme-day .pastel-cloud-field {
@@ -1598,60 +1971,48 @@ button {
 
 .gallery-shell.theme-night {
   color: #f8fbff;
-  background:
-    radial-gradient(ellipse at 18% 28%, rgba(18, 157, 222, 0.34), transparent 28%),
-    radial-gradient(ellipse at 46% 52%, rgba(18, 92, 221, 0.3), transparent 36%),
-    radial-gradient(ellipse at 76% 16%, rgba(92, 132, 255, 0.18), transparent 30%),
-    radial-gradient(ellipse at 88% 78%, rgba(6, 22, 80, 0.72), transparent 38%),
-    linear-gradient(180deg, #01030b 0%, #030918 44%, #00010a 100%);
+  background: #020014;
 }
 
 .gallery-shell.theme-night::before {
-  opacity: 0.84;
+  opacity: 0.28;
   background:
-    radial-gradient(circle at 8% 8%, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 32% 14%, rgba(180, 226, 255, 0.82) 0 1.2px, transparent 1.8px),
-    radial-gradient(circle at 48% 32%, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 64% 18%, rgba(255, 255, 255, 0.82) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 82% 24%, rgba(180, 226, 255, 0.9) 0 1.2px, transparent 2px),
-    radial-gradient(circle at 92% 8%, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.8px),
-    radial-gradient(ellipse at 28% 48%, rgba(0, 176, 255, 0.24), transparent 28%),
-    radial-gradient(ellipse at 46% 68%, rgba(31, 105, 255, 0.18), transparent 34%);
-  filter: none;
+    radial-gradient(ellipse at 50% 70%, rgba(105, 65, 255, 0.22), transparent 54%),
+    linear-gradient(180deg, rgba(2, 0, 20, 0.08), rgba(1, 1, 6, 0.18));
+  filter: blur(0.4px);
 }
 
 .gallery-shell.theme-night::after {
-  opacity: 0.78;
+  opacity: 0.42;
   background:
-    linear-gradient(115deg, transparent 0 25%, rgba(24, 167, 240, 0.16) 35%, rgba(41, 87, 215, 0.18) 48%, transparent 65%),
-    radial-gradient(ellipse at 34% 44%, rgba(55, 206, 255, 0.18), transparent 22%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.62), transparent 26%, transparent 76%, rgba(0, 0, 0, 0.58));
+    linear-gradient(90deg, rgba(0, 0, 0, 0.42), transparent 26%, transparent 76%, rgba(0, 0, 0, 0.5)),
+    radial-gradient(ellipse at 50% 100%, rgba(3, 8, 24, 0.52), transparent 50%);
 }
 
 .theme-night .orbital-flower-scene {
-  background:
-    radial-gradient(circle at 12% 14%, rgba(255, 255, 255, 0.82) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 27% 22%, rgba(170, 222, 255, 0.7) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 76% 10%, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.7px),
-    radial-gradient(circle at 88% 34%, rgba(177, 224, 255, 0.72) 0 1px, transparent 1.8px),
-    radial-gradient(ellipse at 24% 36%, rgba(0, 178, 255, 0.28), transparent 30%),
-    radial-gradient(ellipse at 48% 56%, rgba(36, 86, 215, 0.24), transparent 38%),
-    radial-gradient(ellipse at 72% 18%, rgba(132, 174, 255, 0.16), transparent 28%),
-    linear-gradient(180deg, #01040f 0%, #030b21 52%, #00020a 100%);
+  background: transparent;
 }
 
 .theme-night .pastel-cloud-field {
-  opacity: 0.18;
-  filter: saturate(0.7) brightness(0.45) hue-rotate(170deg);
+  opacity: 0;
 }
 
 .theme-night .scene-light-leak {
-  opacity: 0.42;
+  opacity: 0.2;
   background:
-    radial-gradient(ellipse at 26% 36%, rgba(30, 183, 255, 0.32), transparent 26%),
-    radial-gradient(ellipse at 70% 18%, rgba(115, 151, 255, 0.22), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 52%, rgba(4, 8, 20, 0.2));
+    radial-gradient(ellipse at 24% 34%, rgba(80, 220, 255, 0.18), transparent 28%),
+    radial-gradient(ellipse at 74% 16%, rgba(190, 80, 255, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent 52%, rgba(4, 8, 20, 0.16));
+}
+
+.night-sky-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .theme-night .gallery-hint,
@@ -3414,11 +3775,34 @@ button {
 @keyframes gateCloudDrift {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) scale(var(--cloud-scale, 1));
+    transform: translate3d(0, 0, 0) scale(var(--cloud-scale, 1)) rotate(var(--cloud-rotate, 0deg));
   }
 
   50% {
-    transform: translate3d(var(--cloud-shift, 18px), -8px, 0) scale(var(--cloud-scale, 1));
+    transform: translate3d(var(--cloud-shift, 18px), -10px, 0) scale(var(--cloud-scale, 1)) rotate(1deg);
+  }
+}
+
+@keyframes gateBgMove {
+  from {
+    transform: translate3d(-20px, -10px, 0);
+  }
+
+  to {
+    transform: translate3d(18px, 14px, 0);
+  }
+}
+
+@keyframes gateDotFloat {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: translateY(-8px);
   }
 }
 
@@ -3432,6 +3816,17 @@ button {
   50% {
     opacity: 0.28;
     transform: translate3d(0, -8px, 0) rotate(45deg) scale(0.92);
+  }
+}
+
+@keyframes gateLockFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
   }
 }
 
@@ -3480,6 +3875,37 @@ button {
 
   .gate-screen .password-card {
     padding: 0;
+    transform: scale(0.92);
+  }
+
+  .gate-cloud.cloud-one {
+    left: -18%;
+    top: 18%;
+    --cloud-scale: 0.72;
+  }
+
+  .gate-cloud.cloud-two {
+    right: -18%;
+    top: 20%;
+    --cloud-scale: 0.64;
+  }
+
+  .gate-cloud.cloud-three {
+    right: -18%;
+    top: 39%;
+    --cloud-scale: 0.72;
+  }
+
+  .gate-cloud.cloud-four {
+    left: -12%;
+    bottom: 14%;
+    --cloud-scale: 0.86;
+  }
+
+  .gate-cloud.cloud-five {
+    right: -24%;
+    bottom: 8%;
+    --cloud-scale: 0.78;
   }
 
   .gallery-topline {
